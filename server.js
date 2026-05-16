@@ -12,7 +12,7 @@ app.use(express.json()); // عشان نفهم البيانات اللي جاية
 
 // الاتصال بقاعدة بيانات MongoDB المحلية
 // استخدمنا 127.0.0.1 بدل localhost عشان تتوافق مع أحدث إصدارات Node
-mongoose.connect('mongodb+srv://mohamedabdalrasoul0_db_user:<intmaincleano>@cluster0.ymiglaq.mongodb.net/?appName=Cluster0')
+mongoose.connect('mongodb+srv://mohamedabdalrasoul0_db_user:intmaincleano@cluster0.ymiglaq.mongodb.net/?appName=Cluster0')
     .then(() => console.log('✅ Connected to MongoDB Successfully '))
     .catch((err) => console.error('❌ Failed to connect to MongoDB:', err));
 
