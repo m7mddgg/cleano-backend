@@ -145,9 +145,13 @@ const User = mongoose.model('User', userSchema);
 
 // 1. إنشاء حساب جديد (Sign Up) متأمن ومُشفر
 app.post('/api/signup', async (req, res) => {
+    console.log("Step 1: Request Started - Username:", req.body.username);
     const { username, password, role, adminSecret } = req.body;
+    
     try {
+        console.log("Step 2: Searching in Database...");
         const existingUser = await User.findOne({ username });
+        
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'Username already exists!' });
         }
@@ -161,17 +165,19 @@ app.post('/api/signup', async (req, res) => {
             }
         }
 
-        // ==========================================
-        // سحر التشفير: تحويل الباسورد لرمز معقد
-        // ==========================================
+        console.log("Step 3: Hashing Password with bcrypt...");
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // بنحفظ الباسورد المُشفر (hashedPassword) بدل العادي
+        console.log("Step 4: Saving New User to Database...");
         const newUser = new User({ username, password: hashedPassword, role: finalRole });
         await newUser.save();
+        
+        console.log("Step 5: Success! Sending response...");
         res.json({ success: true, message: 'Account created successfully!' });
+        
     } catch (error) {
+        console.error("Error Block Hit! Details:", error);
         res.status(500).json({ success: false, message: 'Error creating account' });
     }
 });
